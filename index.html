@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>AURA PACK INDUSTRIAL — Grounded Futuristic B2B Packaging & 360° Visualizer</title>
+  <meta name="description" content="Industrial-grade custom branded cups, food wrap roll papers, containers, and printed tissue papers. Interactive real-time 360° visualizer and wholesale pricing.">
+  
+  <!-- Premium Typography: Inter, Space Grotesk, Space Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Background Engineering Grid & Ambient Light -->
+  <div class="engineering-grid"></div>
+  <div class="ambient-light"></div>
+
+  <!-- Primary Application Container -->
+  <div id="app" class="workspace-gated">
+
+    <!-- TOP NAVIGATION & STATUS BAR -->
+    <header class="top-header">
+      <div class="brand-telemetry">
+        <div class="brand-badge">
+          <div class="brand-symbol"></div>
+          <span class="brand-title">AURA PACK</span>
+        </div>
+        <div class="session-indicator" id="session-indicator-box">
+          <span class="status-dot"></span>
+          <span id="session-indicator-text">SESSION: GATED (VERIFICATION REQUIRED)</span>
+        </div>
+      </div>
+
+      <!-- Category Switcher Pill (Top Center) -->
+      <nav class="category-nav" aria-label="Product Categories">
+        <button class="category-tab active" data-category="cups" id="tab-cups">
+          <svg viewBox="0 0 24 24"><path d="M18 8h1a4 4 0 0 1 0 8h-1M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3"/></svg>
+          <span>Cups</span>
+        </button>
+        <button class="category-tab" data-category="wraps" id="tab-wraps">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="10" y1="4" x2="10" y2="20"/></svg>
+          <span>Paper for Wraps & Rolls</span>
+        </button>
+        <button class="category-tab" data-category="containers" id="tab-containers">
+          <svg viewBox="0 0 24 24"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+          <span>Containers</span>
+        </button>
+        <button class="category-tab" data-category="tissues" id="tab-tissues">
+          <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zM9 9h6M9 13h6M9 17h4"/></svg>
+          <span>Printed Tissue Papers</span>
+        </button>
+      </nav>
+
+      <!-- Top Right Actions: Theme Toggle & Info Icon -->
+      <div class="top-actions">
+        <button class="icon-btn" id="btn-theme-toggle" title="Toggle Theme (Obsidian / Matte Clay)" aria-label="Toggle Theme">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <button class="icon-btn" id="btn-info-drawer" title="Company Overview, MOQ & Certifications" aria-label="Industrial Information">
+          <span class="info-icon-badge">i</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN PRODUCT STAGE & VIEWPORT -->
+    <main class="stage-container" id="stage-viewport" aria-label="Interactive 3D Product Stage">
+      <!-- Three.js Canvas -->
+      <canvas id="canvas-3d"></canvas>
+
+      <!-- Alternative 2D Photo / Video Scrubber View -->
+      <div id="photo-scrubber-view">
+        <div class="scrubber-image-wrapper">
+          <img id="scrubber-image" alt="Product Studio Angle Scan" src="assets/products/cup_spot_lie_01.jpeg">
+          <video id="scrubber-video" loop muted playsinline style="display:none; max-width:100%; max-height:65vh; border-radius:16px; border:1px solid var(--border-subtle);"></video>
+        </div>
+      </div>
+
+      <!-- HUD Telemetry (Left Card) -->
+      <div class="hud-telemetry-left">
+        <div class="product-meta-card">
+          <div class="product-category-tag" id="hud-category-tag">HOT & COLD BEVERAGES</div>
+          <h1 class="product-main-title" id="hud-product-title">Single & Double Wall Hot Cups</h1>
+          <p class="product-sub-desc" id="hud-product-desc">Precision-tapered paper cups engineered with virgin food-grade board, ultrasonic leak-proof bottom crimp, and calibrated rolled lips.</p>
+          <div class="specs-grid" id="hud-specs-grid">
+            <!-- Dynamically populated from config.js -->
+          </div>
+        </div>
+      </div>
+
+      <!-- HUD Telemetry (Right Gyro Readout) -->
+      <div class="hud-telemetry-right">
+        <div class="telemetry-card">
+          <div class="telemetry-line">
+            <span class="telemetry-label">ROTATION_X</span>
+            <span class="telemetry-value" id="telemetry-rot-x">+14.2°</span>
+          </div>
+          <div class="telemetry-line">
+            <span class="telemetry-label">ROTATION_Y</span>
+            <span class="telemetry-value" id="telemetry-rot-y">-28.6°</span>
+          </div>
+          <div class="telemetry-line">
+            <span class="telemetry-label">ZOOM_SCALE</span>
+            <span class="telemetry-value" id="telemetry-scale">1.00x</span>
+          </div>
+          <div class="telemetry-line">
+            <span class="telemetry-label">FRAME_REF</span>
+            <span class="telemetry-value" id="telemetry-frame">LIVE 3D</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interaction Cue Banner -->
+      <div class="interaction-cue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 21h5v-5"/></svg>
+        <span>Drag any direction to rotate 360° • Scroll / Pinch to zoom</span>
+      </div>
+
+      <!-- View Mode Pill (Bottom Left) -->
+      <div class="view-mode-pill">
+        <button class="view-mode-btn active" data-view-mode="3d" id="btn-mode-3d">3D WebGL</button>
+        <button class="view-mode-btn" data-view-mode="photo" id="btn-mode-photo">Studio Scans</button>
+        <button class="view-mode-btn" data-view-mode="video" id="btn-mode-video">Reference Motion</button>
+      </div>
+
+      <!-- Viewport Floating Controls (Bottom Right) -->
+      <div class="viewport-floating-controls">
+        <button class="control-btn" id="btn-autorotate" title="Toggle 360° Auto-Orbit" aria-label="Auto Rotate">⟳</button>
+        <button class="control-btn" id="btn-exploded-view" title="Toggle Exploded Mechanical View" aria-label="Exploded View">⤢</button>
+        <button class="control-btn" id="btn-wireframe" title="Toggle Structural Wireframe" aria-label="Wireframe">⌗</button>
+        <button class="control-btn" id="btn-reset-view" title="Reset Camera Perspective" aria-label="Reset View">⊙</button>
+        <button class="control-btn" id="btn-zoom-in" title="Zoom In" aria-label="Zoom In">+</button>
+        <div class="zoom-slider-container">
+          <input type="range" id="viewport-zoom-slider" min="0" max="100" value="50" title="Zoom Level" aria-label="Zoom Level">
+        </div>
+        <button class="control-btn" id="btn-zoom-out" title="Zoom Out" aria-label="Zoom Out">-</button>
+      </div>
+    </main>
+
+    <!-- BOTTOM DUAL ACTION CONTROLS ("PRICE" & "HOW WILL YOUR PRODUCT LOOK") -->
+    <div class="bottom-dock">
+      <div class="action-pill-bar">
+        <!-- Button 1: Price -->
+        <button class="action-pill-btn btn-accent" id="btn-action-price" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <span>Price & Tiers</span>
+        </button>
+
+        <!-- Button 2: How Will Your Product Look -->
+        <button class="action-pill-btn" id="btn-action-final-look" aria-haspopup="dialog">
+          <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          <span>How Will Your Product Look</span>
+        </button>
+      </div>
+    </div>
+
+  </div> <!-- /#app -->
+
+
+  <!-- =========================================================================
+       MANDATORY LEAD-CAPTURE GATE MODAL (NO LOGIN / SIGNUP)
+       ========================================================================= -->
+  <div class="modal-overlay" id="lead-gate-modal" role="dialog" aria-modal="true" aria-labelledby="gate-title-id">
+    <div class="gate-card">
+      <div class="gate-header">
+        <div class="gate-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <span>B2B VERIFICATION GATE</span>
+        </div>
+        <h2 class="gate-title" id="gate-title-id">Access 360° Product Studio</h2>
+        <p class="gate-subtitle">Direct manufacturer access for commercial cafes, cloud kitchens, QSR chains, and wholesale packaging procurement.</p>
+      </div>
+
+      <form id="lead-gate-form" class="gate-form" novalidate>
+        <!-- 1. Full Name -->
+        <div class="form-group">
+          <label class="form-label" for="lead-name">
+            <span>Full Name</span>
+            <span class="required-mark">* Required</span>
+          </label>
+          <input type="text" id="lead-name" class="form-input" placeholder="e.g. Elena Rostova" required autocomplete="name">
+          <span class="form-error-msg"></span>
+        </div>
+
+        <!-- 2. Type of Business -->
+        <div class="form-group">
+          <label class="form-label" for="lead-business">
+            <span>Type of Business</span>
+            <span class="required-mark">* Required</span>
+          </label>
+          <input type="text" id="lead-business" class="form-input" placeholder="e.g. Specialty Café / QSR / Cloud Kitchen / Retail" required>
+          <span class="form-error-msg"></span>
+        </div>
+
+        <!-- 3. Email ID -->
+        <div class="form-group">
+          <label class="form-label" for="lead-email">
+            <span>Corporate / Business Email ID</span>
+            <span class="required-mark">* Required</span>
+          </label>
+          <input type="email" id="lead-email" class="form-input" placeholder="elena@artisanroasters.com" required autocomplete="email">
+          <span class="form-error-msg"></span>
+        </div>
+
+        <!-- 4. Phone Number -->
+        <div class="form-group">
+          <label class="form-label" for="lead-phone">
+            <span>Direct Phone / WhatsApp</span>
+            <span class="required-mark">* Required</span>
+          </label>
+          <input type="tel" id="lead-phone" class="form-input" placeholder="+1 (555) 019-2834" required autocomplete="tel">
+          <span class="form-error-msg"></span>
+        </div>
+
+        <!-- 5. Your Query / Requirements -->
+        <div class="form-group">
+          <label class="form-label" for="lead-query">
+            <span>Your Query / Estimated Requirements</span>
+            <span class="required-mark">* Required</span>
+          </label>
+          <textarea id="lead-query" class="form-textarea" placeholder="Detail your monthly volume, cup sizes, custom print specifications, or rollout timeline..." required></textarea>
+          <span class="form-error-msg"></span>
+        </div>
+
+        <!-- 6. How did you hear about us? -->
+        <div class="form-group" id="lead-referral-container">
+          <label class="form-label">
+            <span>How did you hear about us?</span>
+            <span class="required-mark">* Required</span>
+          </label>
+          <div class="pill-radio-group">
+            <div class="pill-radio-item">
+              <input type="radio" id="ref-google" name="lead_referral" value="a) Google" required>
+              <label class="pill-radio-label" for="ref-google">a) Google</label>
+            </div>
+            <div class="pill-radio-item">
+              <input type="radio" id="ref-sales" name="lead_referral" value="b) Salesperson">
+              <label class="pill-radio-label" for="ref-sales">b) Salesperson</label>
+            </div>
+            <div class="pill-radio-item">
+              <input type="radio" id="ref-tele" name="lead_referral" value="c) Telemarketers">
+              <label class="pill-radio-label" for="ref-tele">c) Telemarketers</label>
+            </div>
+            <div class="pill-radio-item">
+              <input type="radio" id="ref-social" name="lead_referral" value="d) Social Media">
+              <label class="pill-radio-label" for="ref-social">d) Social Media</label>
+            </div>
+            <div class="pill-radio-item">
+              <input type="radio" id="ref-other" name="lead_referral" value="e) Other">
+              <label class="pill-radio-label" for="ref-other">e) Other</label>
+            </div>
+          </div>
+          <span class="form-error-msg">Please select an attribution channel.</span>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="gate-submit-btn" id="btn-submit-gate">
+          <span>Enter 360° Studio & Pricing</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </button>
+        <p class="gate-disclaimer">Zero spam policy. Your details are solely used for technical prepress verification and wholesale quotes.</p>
+      </form>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       TOP-RIGHT INFORMATION DRAWER / POPOVER BOX
+       ========================================================================= -->
+  <aside class="info-drawer" id="info-drawer" role="complementary" aria-label="Company Overview and Policies">
+    <div class="drawer-header">
+      <div>
+        <h2 class="drawer-title" id="drawer-brand-name">AURA PACK INDUSTRIAL</h2>
+        <p class="drawer-subtitle" id="drawer-tagline">Industrial-Grade Custom Food Packaging & Flexo Printing</p>
+      </div>
+      <button class="close-btn" id="btn-close-info" aria-label="Close Info Box">✕</button>
+    </div>
+
+    <!-- Company Overview -->
+    <div class="drawer-section">
+      <div class="drawer-section-title">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>Manufacturing Profile</span>
+      </div>
+      <p class="drawer-p" id="drawer-overview"></p>
+    </div>
+
+    <!-- Infrastructure Specs -->
+    <div class="drawer-section">
+      <div class="drawer-section-title">Plant Infrastructure & Caliper Range</div>
+      <div class="specs-grid" id="drawer-infra-list"></div>
+    </div>
+
+    <!-- Minimum Order Quantities (MOQ) -->
+    <div class="drawer-section">
+      <div class="drawer-section-title">Minimum Order Quantity (MOQ) Policies</div>
+      <table class="moq-table">
+        <tbody id="drawer-moq-list"></tbody>
+      </table>
+    </div>
+
+    <!-- Food Grade Certifications -->
+    <div class="drawer-section">
+      <div class="drawer-section-title">Food Safety & Eco Certifications</div>
+      <div class="specs-grid" id="drawer-cert-list"></div>
+    </div>
+
+    <!-- Prepress Guidelines -->
+    <div class="drawer-section">
+      <div class="drawer-section-title">Prepress & Artwork Guidelines</div>
+      <ul class="guideline-list" id="drawer-prepress-list"></ul>
+    </div>
+
+    <!-- Direct Contact Desk -->
+    <div class="drawer-section" style="margin-bottom:0;">
+      <div class="drawer-section-title">Commercial Desk Contact</div>
+      <div class="specs-grid" id="drawer-contact-info"></div>
+    </div>
+  </aside>
+
+
+  <!-- =========================================================================
+       PRICING MODAL & INTERACTIVE VOLUME ESTIMATOR
+       ========================================================================= -->
+  <div class="modal-dialog" id="price-modal" role="dialog" aria-modal="true" aria-labelledby="price-modal-title">
+    <div class="modal-window">
+      <div class="drawer-header">
+        <div>
+          <h2 class="drawer-title" id="price-modal-title">Wholesale Pricing Structure</h2>
+          <p class="drawer-subtitle">Direct tiered manufacturer rates per unit (Ex-Works Factory Floor)</p>
+        </div>
+        <button class="close-btn" id="btn-close-price" aria-label="Close Pricing Modal">✕</button>
+      </div>
+
+      <!-- Pricing Summary Badges -->
+      <div style="display:flex; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
+        <div class="session-indicator">
+          <span>Standard Lead Time:</span>
+          <strong id="price-lead-time" style="color:var(--text-primary);">10–12 business days</strong>
+        </div>
+        <div class="session-indicator">
+          <span>Plate Setup:</span>
+          <strong id="price-setup-fee" style="color:var(--text-primary);">$65 per cylinder</strong>
+        </div>
+      </div>
+
+      <!-- Tier Table -->
+      <table class="pricing-tiers-table">
+        <thead>
+          <tr>
+            <th>Volume Tier</th>
+            <th>Unit Cost</th>
+            <th>Batch Total</th>
+            <th>Benefit</th>
+          </tr>
+        </thead>
+        <tbody id="pricing-table-body">
+          <!-- Populated from config.js -->
+        </tbody>
+      </table>
+
+      <!-- Interactive Volume Estimator Calculator -->
+      <div class="volume-calc-box">
+        <div class="calc-header">
+          <span class="calc-title">Interactive Order Estimator</span>
+          <span class="calc-units-display" id="calc-units-number">10,000 Units</span>
+        </div>
+        <input type="range" class="calc-slider" id="pricing-volume-slider" min="5000" max="100000" step="1000" value="10000">
+        
+        <div class="calc-results-row">
+          <div class="calc-metric">
+            <span class="calc-metric-label">Estimated Unit Cost</span>
+            <span class="calc-metric-val" id="calc-unit-price">$0.068</span>
+          </div>
+          <div class="calc-metric">
+            <span class="calc-metric-label">Estimated Subtotal</span>
+            <span class="calc-metric-val" id="calc-total-price">$680.00</span>
+          </div>
+          <div class="calc-metric">
+            <span class="calc-metric-label">Volume Advantage</span>
+            <span class="calc-metric-val" id="calc-savings-badge" style="color:var(--accent-emerald);">17% Savings</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+        <button class="action-pill-btn btn-accent" onclick="alert('Your estimate has been attached to your verified corporate session. A dedicated packaging engineer will review your specs within 2 business hours.');">
+          <span>Request Formal Proforma Invoice</span>
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- =========================================================================
+       FINAL LOOK MODAL ("HOW WILL YOUR PRODUCT LOOK")
+       ========================================================================= -->
+  <div class="modal-dialog" id="final-look-modal" role="dialog" aria-modal="true" aria-labelledby="final-look-title">
+    <div class="modal-window">
+      <div class="drawer-header">
+        <div>
+          <h2 class="drawer-title" id="final-look-title">Final Product Visual Mockup</h2>
+          <p class="drawer-subtitle" id="final-look-client-type">Production sample reference with client branding applied</p>
+        </div>
+        <button class="close-btn" id="btn-close-final-look" aria-label="Close Final Look Modal">✕</button>
+      </div>
+
+      <div class="final-look-content">
+        <!-- Hero Render Box -->
+        <div class="mockup-hero-box">
+          <img id="final-look-hero-img" src="assets/cups_final_mockup.jpg" alt="Final Branded Product Showcase">
+          <div class="brand-overlay-tag" id="final-look-brand-tag">PRODUCTION SAMPLE: ARCHITECT COFFEE CO.</div>
+        </div>
+
+        <!-- Finish Specifications -->
+        <div>
+          <div class="drawer-section-title" style="margin-bottom:10px;">Applied Print & Material Specifications</div>
+          <div class="final-look-specs-grid" id="final-look-specs-container">
+            <!-- Populated from config.js -->
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:22px; display:flex; justify-content:space-between; align-items:center;">
+        <span style="font-size:12px; color:var(--text-muted); font-family:var(--font-mono);">PREPRESS 3D ACCURACY GUARANTEE</span>
+        <button class="action-pill-btn btn-accent" onclick="alert('Digital 3D Prepress Proofing link will be generated after your vector artwork upload.');">
+          <span>Upload Custom Brand Artwork (.AI / .PDF)</span>
+          <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Application Scripts -->
+  <script src="js/vendor/three.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/leadGate.js"></script>
+  <script src="js/visualizer3d.js"></script>
+  <script src="js/photoScrubber.js"></script>
+  <script src="js/modals.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

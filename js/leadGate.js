@@ -9,7 +9,7 @@
 
 class LeadGate {
   constructor(options = {}) {
-    this.storageKey = 'aura_b2b_lead_session';
+    this.storageKey = 'bps_b2b_lead_session';
     this.appEl = document.getElementById('app');
     this.gateOverlayEl = document.getElementById('lead-gate-modal');
     this.gateFormEl = document.getElementById('lead-gate-form');
@@ -23,8 +23,8 @@ class LeadGate {
   init() {
     if (!this.gateOverlayEl || !this.gateFormEl) return;
 
-    // Check if previously authenticated in this browser session
-    const savedSession = localStorage.getItem(this.storageKey);
+    // Check if previously authenticated in this browser session (supporting migration)
+    const savedSession = localStorage.getItem(this.storageKey) || localStorage.getItem('aura_b2b_lead_session');
     if (savedSession) {
       try {
         this.currentLead = JSON.parse(savedSession);

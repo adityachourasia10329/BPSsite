@@ -10,9 +10,9 @@
 const DATA_CONFIG = {
   // Company & Manufacturing Profile for top-right info drawer
   companyInfo: {
-    brandName: "AURA PACK INDUSTRIAL",
+    brandName: "BPS INDUSTRIAL",
     tagline: "Industrial-Grade Custom Food Packaging & Sustainable Flexo Printing",
-    overview: "Aura Pack Industrial is an enterprise manufacturing partner specializing in sustainable, certified food-grade packaging. We engineer bespoke branded solutions for global QSR chains, boutique specialty roasters, cloud kitchens, and institutional hospitality operators.",
+    overview: "BPS is an enterprise manufacturing partner specializing in sustainable, certified food-grade packaging. We engineer bespoke branded solutions for global QSR chains, boutique specialty roasters, cloud kitchens, and institutional hospitality operators.",
     infrastructure: [
       { label: "Printing Tech", val: "6-Color HD Flexography & 8-Color UV Heidelberg Offset" },
       { label: "Caliper Range", val: "180 GSM to 450 GSM Virgin & Recycled Kraft Boards" },
@@ -39,9 +39,9 @@ const DATA_CONFIG = {
       "Complimentary prepress 3D digital proof generated within 24 hours of PO."
     ],
     contactInfo: {
-      salesEmail: "b2b@aurapack-industrial.com",
-      enterpriseDesk: "+1 (800) 482-AURA / +91 (22) 8800-PACK",
-      plantLocation: "Aura Industrial Park, Sector 4, Precision Manufacturing Corridor",
+      salesEmail: "b2b@bps-industrial.com",
+      enterpriseDesk: "+1 (800) 482-BPS / +91 (22) 8800-PACK",
+      plantLocation: "BPS Industrial Park, Sector 4, Precision Manufacturing Corridor",
       turnaround: "Standard production dispatch: 10–14 business days. Priority expedited: 6 business days."
     }
   },

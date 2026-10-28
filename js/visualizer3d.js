@@ -17,8 +17,8 @@ class Visualizer3D {
 
     this.options = Object.assign({
       minDistance: 2.2,
-      maxDistance: 7.0,
-      initialDistance: 3.8,
+      maxDistance: 7.5,
+      initialDistance: 7.5, // Always start at the smallest size on the zoom scale
       dampingFactor: 0.065,
       rotationSensitivity: 0.0055,
       zoomSensitivity: 0.002,
@@ -46,8 +46,8 @@ class Visualizer3D {
     this.targetRotation = { x: 0.15, y: -0.4 };
     this.currentRotation = { x: 0.15, y: -0.4 };
     this.velocity = { x: 0, y: 0 };
-    this.targetDistance = this.options.initialDistance;
-    this.currentDistance = this.options.initialDistance;
+    this.targetDistance = this.options.maxDistance;
+    this.currentDistance = this.options.maxDistance;
 
     // Multi-touch tracking
     this.touchPinchDist = 0;
@@ -296,6 +296,144 @@ class Visualizer3D {
 
       ctx.font = '600 40px "Space Mono", monospace';
       ctx.fillText('LUXURY COCKTAIL EMBOSSED NAPKINS — 3 PLY', canvas.width * 0.5, 570);
+
+    } else if (type === 'cup_warli') {
+      // 5. WARLI TRIBAL FOLK ART (Without Lid Cup - referencing user's edited image)
+      ctx.fillStyle = '#FFFFFF';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Top green double accent lines
+      ctx.strokeStyle = '#1E6B34';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(0, 110);
+      ctx.lineTo(canvas.width, 110);
+      ctx.stroke();
+
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(0, 126);
+      ctx.lineTo(canvas.width, 126);
+      ctx.stroke();
+
+      // Bottom green border: double parallel lines with green triangle zigzag (▲▲▲▲▲)
+      const bY = 810;
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(0, bY);
+      ctx.lineTo(canvas.width, bY);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(0, bY + 80);
+      ctx.lineTo(canvas.width, bY + 80);
+      ctx.stroke();
+
+      ctx.fillStyle = '#1E6B34';
+      const triWidth = 36;
+      for (let x = 0; x < canvas.width; x += triWidth) {
+        ctx.beginPath();
+        ctx.moveTo(x, bY + 70);
+        ctx.lineTo(x + triWidth / 2, bY + 16);
+        ctx.lineTo(x + triWidth, bY + 70);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Warli tribal figures dancing around the circumference in rich green (#1E6B34)
+      const greenColor = '#1E6B34';
+      ctx.fillStyle = greenColor;
+      ctx.strokeStyle = greenColor;
+      ctx.lineWidth = 8;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      const numFigures = 10;
+      const spacing = canvas.width / numFigures;
+      for (let i = 0; i < numFigures; i++) {
+        const cx = i * spacing + spacing / 2;
+        const cy = 460;
+
+        // Head
+        ctx.beginPath();
+        ctx.arc(cx, cy - 140, 26, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Hair bun
+        ctx.beginPath();
+        ctx.arc(cx - 24, cy - 150, 14, 0, Math.PI * 2);
+        ctx.fill();
+
+        // Upper triangle body
+        ctx.beginPath();
+        ctx.moveTo(cx - 52, cy - 100);
+        ctx.lineTo(cx + 52, cy - 100);
+        ctx.lineTo(cx, cy - 18);
+        ctx.closePath();
+        ctx.fill();
+
+        // Lower triangle body
+        ctx.beginPath();
+        ctx.moveTo(cx, cy - 18);
+        ctx.lineTo(cx - 56, cy + 64);
+        ctx.lineTo(cx + 56, cy + 64);
+        ctx.closePath();
+        ctx.fill();
+
+        // Dancing stick legs
+        ctx.beginPath();
+        if (i % 2 === 0) {
+          ctx.moveTo(cx - 20, cy + 64);
+          ctx.lineTo(cx - 65, cy + 130);
+          ctx.lineTo(cx - 85, cy + 120);
+          ctx.moveTo(cx + 20, cy + 64);
+          ctx.lineTo(cx + 45, cy + 110);
+          ctx.lineTo(cx + 70, cy + 170);
+        } else {
+          ctx.moveTo(cx - 20, cy + 64);
+          ctx.lineTo(cx - 40, cy + 110);
+          ctx.lineTo(cx - 65, cy + 170);
+          ctx.moveTo(cx + 20, cy + 64);
+          ctx.lineTo(cx + 65, cy + 130);
+          ctx.lineTo(cx + 85, cy + 120);
+        }
+        ctx.stroke();
+
+        // Arms holding instruments / shield / dance
+        ctx.beginPath();
+        if (i % 3 === 0) {
+          // Tutari / Trumpet horn
+          ctx.moveTo(cx - 40, cy - 90);
+          ctx.lineTo(cx - 85, cy - 70);
+          ctx.moveTo(cx + 40, cy - 90);
+          ctx.lineTo(cx + 80, cy - 50);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.moveTo(cx + 75, cy - 50);
+          ctx.lineTo(cx + 140, cy - 100);
+          ctx.lineTo(cx + 125, cy - 10);
+          ctx.closePath();
+          ctx.fill();
+        } else if (i % 3 === 1) {
+          // Shield / fan with spokes
+          ctx.moveTo(cx - 40, cy - 90);
+          ctx.lineTo(cx - 80, cy - 30);
+          ctx.moveTo(cx + 40, cy - 90);
+          ctx.lineTo(cx + 70, cy - 130);
+          ctx.stroke();
+          ctx.beginPath();
+          ctx.arc(cx - 95, cy - 30, 42, -Math.PI / 2, Math.PI / 2);
+          ctx.stroke();
+        } else {
+          // Dynamic dancing arms
+          ctx.moveTo(cx - 40, cy - 90);
+          ctx.lineTo(cx - 85, cy - 140);
+          ctx.lineTo(cx - 60, cy - 170);
+          ctx.moveTo(cx + 40, cy - 90);
+          ctx.lineTo(cx + 85, cy - 40);
+          ctx.stroke();
+        }
+      }
     }
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -344,71 +482,86 @@ class Visualizer3D {
       this.targetRotation.x = cfg.defaultAngle.x;
       this.targetRotation.y = cfg.defaultAngle.y;
     }
-    this.targetDistance = this.options.initialDistance;
+
+    // REQUIREMENT 1: Always open in smallest size on zoom scale (maxDistance)
+    this.targetDistance = this.options.maxDistance;
+    this.currentDistance = this.options.maxDistance;
+    if (this.camera) this.camera.position.z = this.options.maxDistance;
+    if (this.options.onZoomUpdate) {
+      this.options.onZoomUpdate(0);
+    }
   }
 
   /**
-   * 1. CUPS MODEL: Precision paper cup with rolled rim, recessed bottom seal, and PBR coating
+   * 1. CUPS MODEL: Dual Cups Side-by-Side (Left: With Lid, Right: Without Lid Warli Art)
    */
   buildCupModel() {
     const group = this.currentMeshGroup;
-    group.name = 'cup_model';
+    group.name = 'cups_pair_model';
 
-    const brandTexture = this.createBrandingTexture('cup');
-
-    // Outer Shell (tapered cylinder: top radius 0.95, bottom radius 0.65, height 2.2)
-    const cupGeo = new THREE.CylinderGeometry(0.95, 0.65, 2.2, 64, 1, true);
-    const cupMat = new THREE.MeshStandardMaterial({
-      map: brandTexture,
-      roughness: 0.62,
-      metalness: 0.08,
-      side: THREE.DoubleSide,
-      wireframe: this.isWireframe
-    });
-    const cupMesh = new THREE.Mesh(cupGeo, cupMat);
-    cupMesh.castShadow = true;
-    cupMesh.receiveShadow = true;
-    group.add(cupMesh);
-    this.mainBodyMesh = cupMesh;
-
-    // Rolled Top Lip (Torus)
-    const lipGeo = new THREE.TorusGeometry(0.95, 0.045, 16, 64);
+    // Shared Materials & Geometries
+    const lipGeo = new THREE.TorusGeometry(0.85, 0.04, 16, 64);
     const lipMat = new THREE.MeshStandardMaterial({
       color: 0xF5F5F3,
       roughness: 0.5,
       metalness: 0.05,
       wireframe: this.isWireframe
     });
-    const lipMesh = new THREE.Mesh(lipGeo, lipMat);
-    lipMesh.rotation.x = Math.PI / 2;
-    lipMesh.position.y = 1.1;
-    group.add(lipMesh);
 
-    // Recessed Bottom Seal Plate (Paper disc inside)
-    const bottomGeo = new THREE.CircleGeometry(0.66, 48);
+    const bottomGeo = new THREE.CircleGeometry(0.59, 48);
     const bottomMat = new THREE.MeshStandardMaterial({
       color: 0xF0EDE6,
       roughness: 0.7,
       side: THREE.DoubleSide
     });
-    const bottomMesh = new THREE.Mesh(bottomGeo, bottomMat);
-    bottomMesh.rotation.x = Math.PI / 2;
-    bottomMesh.position.y = -0.98; // recessed 0.12 from bottom lip
-    group.add(bottomMesh);
 
-    // Bottom crimp ring
-    const crimpGeo = new THREE.TorusGeometry(0.65, 0.025, 16, 48);
-    const crimpMesh = new THREE.Mesh(crimpGeo, lipMat);
-    crimpMesh.rotation.x = Math.PI / 2;
-    crimpMesh.position.y = -1.1;
-    group.add(crimpMesh);
+    const crimpGeo = new THREE.TorusGeometry(0.58, 0.025, 16, 48);
 
-    // Exploded View Component: Snap-On Dome Lid
+    // -------------------------------------------------------------
+    // LEFT CUP: With Lid (Moved slightly to the left: x = -1.25)
+    // -------------------------------------------------------------
+    const cupLeftGroup = new THREE.Group();
+    cupLeftGroup.position.set(-1.25, 0, 0);
+
+    const brandTextureLeft = this.createBrandingTexture('cup');
+    const cupLeftGeo = new THREE.CylinderGeometry(0.85, 0.58, 2.0, 64, 1, true);
+    const cupLeftMat = new THREE.MeshStandardMaterial({
+      map: brandTextureLeft,
+      roughness: 0.62,
+      metalness: 0.08,
+      side: THREE.DoubleSide,
+      wireframe: this.isWireframe
+    });
+    const cupLeftMesh = new THREE.Mesh(cupLeftGeo, cupLeftMat);
+    cupLeftMesh.castShadow = true;
+    cupLeftMesh.receiveShadow = true;
+    cupLeftGroup.add(cupLeftMesh);
+    this.mainBodyMesh = cupLeftMesh;
+
+    // Rolled Top Lip (Left)
+    const lipLeft = new THREE.Mesh(lipGeo, lipMat);
+    lipLeft.rotation.x = Math.PI / 2;
+    lipLeft.position.y = 1.0;
+    cupLeftGroup.add(lipLeft);
+
+    // Recessed Bottom Seal Plate (Left)
+    const bottomLeft = new THREE.Mesh(bottomGeo, bottomMat);
+    bottomLeft.rotation.x = Math.PI / 2;
+    bottomLeft.position.y = -0.88;
+    cupLeftGroup.add(bottomLeft);
+
+    // Bottom crimp ring (Left)
+    const crimpLeft = new THREE.Mesh(crimpGeo, lipMat);
+    crimpLeft.rotation.x = Math.PI / 2;
+    crimpLeft.position.y = -1.0;
+    cupLeftGroup.add(crimpLeft);
+
+    // Snap-On Lid on Left Cup (can lift in exploded view)
     const lidGroup = new THREE.Group();
     lidGroup.name = 'exploded_layer';
-    lidGroup.position.y = 1.12;
+    lidGroup.position.y = 1.02;
 
-    const lidRimGeo = new THREE.TorusGeometry(0.97, 0.05, 16, 64);
+    const lidRimGeo = new THREE.TorusGeometry(0.87, 0.045, 16, 64);
     const lidMat = new THREE.MeshStandardMaterial({
       color: 0x1A1A20,
       roughness: 0.35,
@@ -419,22 +572,65 @@ class Visualizer3D {
     lidRim.rotation.x = Math.PI / 2;
     lidGroup.add(lidRim);
 
-    const lidTopGeo = new THREE.CylinderGeometry(0.93, 0.97, 0.22, 64, 1, false);
+    const lidTopGeo = new THREE.CylinderGeometry(0.83, 0.87, 0.2, 64, 1, false);
     const lidTop = new THREE.Mesh(lidTopGeo, lidMat);
-    lidTop.position.y = 0.11;
+    lidTop.position.y = 0.1;
     lidGroup.add(lidTop);
 
     // Sip hole aperture
-    const sipGeo = new THREE.BoxGeometry(0.2, 0.04, 0.1);
+    const sipGeo = new THREE.BoxGeometry(0.18, 0.04, 0.09);
     const sipMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
     const sipHole = new THREE.Mesh(sipGeo, sipMat);
-    sipHole.position.set(0, 0.22, 0.65);
+    sipHole.position.set(0, 0.2, 0.58);
     lidGroup.add(sipHole);
 
-    group.add(lidGroup);
+    cupLeftGroup.add(lidGroup);
+    group.add(cupLeftGroup);
+
+    // -------------------------------------------------------------
+    // RIGHT CUP: Without Lid (Warli tribal green print - x = +1.25)
+    // -------------------------------------------------------------
+    const cupRightGroup = new THREE.Group();
+    cupRightGroup.position.set(1.25, 0, 0);
+
+    const warliTexture = this.createBrandingTexture('cup_warli');
+    const cupRightGeo = new THREE.CylinderGeometry(0.85, 0.58, 2.0, 64, 1, true);
+    const cupRightMat = new THREE.MeshStandardMaterial({
+      map: warliTexture,
+      roughness: 0.55,
+      metalness: 0.03,
+      side: THREE.DoubleSide,
+      wireframe: this.isWireframe
+    });
+    const cupRightMesh = new THREE.Mesh(cupRightGeo, cupRightMat);
+    cupRightMesh.castShadow = true;
+    cupRightMesh.receiveShadow = true;
+    cupRightGroup.add(cupRightMesh);
+
+    // Open Paper Rolled Lip (Right Cup without lid)
+    const lipRight = new THREE.Mesh(lipGeo, lipMat);
+    lipRight.rotation.x = Math.PI / 2;
+    lipRight.position.y = 1.0;
+    cupRightGroup.add(lipRight);
+
+    // Bottom disc (Right)
+    const bottomRight = new THREE.Mesh(bottomGeo, bottomMat);
+    bottomRight.rotation.x = Math.PI / 2;
+    bottomRight.position.y = -0.88;
+    cupRightGroup.add(bottomRight);
+
+    // Bottom crimp ring (Right)
+    const crimpRight = new THREE.Mesh(crimpGeo, lipMat);
+    crimpRight.rotation.x = Math.PI / 2;
+    crimpRight.position.y = -1.0;
+    cupRightGroup.add(crimpRight);
+
+    group.add(cupRightGroup);
+
+    // Exploded View targets the lid on the left cup
     this.explodedPart = lidGroup;
-    this.explodedPartBasePos = new THREE.Vector3(0, 1.12, 0);
-    this.explodedPartTargetPos = new THREE.Vector3(0, 2.3, 0);
+    this.explodedPartBasePos = new THREE.Vector3(0, 1.02, 0);
+    this.explodedPartTargetPos = new THREE.Vector3(0, 2.1, 0);
   }
 
   /**
@@ -758,7 +954,10 @@ class Visualizer3D {
       this.targetRotation.x = 0.15;
       this.targetRotation.y = -0.4;
     }
-    this.targetDistance = this.options.initialDistance;
+    this.targetDistance = this.options.maxDistance;
+    if (this.options.onZoomUpdate) {
+      this.options.onZoomUpdate(0);
+    }
   }
 
   handleResize() {

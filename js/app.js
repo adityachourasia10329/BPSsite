@@ -34,7 +34,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 4. Initialize Mandatory Lead Gate
+  // 4. Initialize Continuous Miniature 3D & Photo Marquee on Gate
+  const gateMarquee = new window.GateMarquee('gate-marquee-stage');
+
+  // 5. Initialize Mandatory Lead Gate
   const leadGate = new window.LeadGate({
     onUnlock: (lead) => {
       console.log('360 Studio Unlocked for client:', lead);
@@ -47,11 +50,11 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Expose instances to window for debugging and dev testing
-  window.appInstances = { leadGate, visualizer, scrubber, modalsCtrl };
+  window.appInstances = { leadGate, visualizer, scrubber, modalsCtrl, gateMarquee };
 
   // Current Active State
   let currentCategory = 'cups';
-  let currentViewMode = '3d'; // '3d' or 'photo' or 'video'
+  let currentViewMode = '3d'; // '3d' or 'photo'
 
   // 5. Category Navigation
   const categoryTabs = document.querySelectorAll('.category-tab');
@@ -138,13 +141,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const meta = window.DATA_CONFIG?.productMedia?.[currentCategory];
         if (meta && meta.photos) {
           scrubber.setPhotos(meta.photos);
-        }
-      } else if (mode === 'video') {
-        if (canvas3dEl) canvas3dEl.style.display = 'none';
-        if (scrubberViewEl) scrubberViewEl.classList.add('active');
-        const meta = window.DATA_CONFIG?.productMedia?.[currentCategory];
-        if (meta && meta.referenceVideos && meta.referenceVideos.length > 0) {
-          scrubber.setVideo(meta.referenceVideos[0].url);
         }
       }
     });

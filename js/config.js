@@ -67,23 +67,18 @@ const DATA_CONFIG = {
         { label: "Leak Resistance", value: "Ultrasonic 360° bottom fusion" },
         { label: "Eco-Option", value: "100% Home compostable bio-dispersion" }
       ],
-      // Multi-angle client photography sequence
+      // Multi-angle reference photography sequence
       photos: [
-        { url: "assets/products/cup_spot_lie_01.jpeg", label: "Angle 001 — Spot The Lie (Front Logo)" },
-        { url: "assets/products/cup_spot_lie_02.jpeg", label: "Angle 090 — French Fries Story Panel" },
-        { url: "assets/products/cup_spot_lie_03.jpeg", label: "Angle 180 — Squirrels Power Grid Fact" },
-        { url: "assets/products/cup_spot_lie_04.jpeg", label: "Angle 270 — Emu War Trivia Panel" },
-        { url: "assets/products/cup_nescafe_front.jpeg", label: "Commercial Showcase — Nescafé High-Contrast Red/Black" },
-        { url: "assets/products/cup_nescafe_side.jpeg", label: "Caution Print & Barcode Scan Margin" },
-        { url: "assets/products/cup_folk_side.jpeg", label: "Artisan Warli Geometric Green Print" },
-        { url: "assets/products/cup_folk_logo.jpeg", label: "Status Eco-Circle Trademark Stamp" },
-        { url: "assets/products/cup_folk_bottom.jpeg", label: "Bottom Seal & Biodegradable Inscription" },
-        { url: "assets/products/cup_top_rim.jpeg", label: "Aperture Top Rim Geometry" }
-      ],
-      // Reference motion clips
-      referenceVideos: [
-        { url: "rec 1.mp4", title: "Reference 1: 3D Inertia Card Orbit & Specular Highlights" },
-        { url: "rec 4.mp4", title: "Reference 4: Studio Exploded Layering & Scrubbing Physics" }
+        { url: "assets/products/cup_warli_nolid.jpg", label: "Reference Photo 01 — Custom Printed Paper Cup (Without Lid)" },
+        { url: "assets/products/cup_angles_collage.jpg", label: "Reference Photo 02 — Multi-Angle Inspection Collage" },
+        { url: "assets/products/cup_spot_lie_01.jpeg", label: "Reference Photo 03 — Spot The Lie (Front Logo)" },
+        { url: "assets/products/cup_spot_lie_02.jpeg", label: "Reference Photo 04 — French Fries Story Panel" },
+        { url: "assets/products/cup_spot_lie_03.jpeg", label: "Reference Photo 05 — Squirrels Power Grid Fact" },
+        { url: "assets/products/cup_spot_lie_04.jpeg", label: "Reference Photo 06 — Emu War Trivia Panel" },
+        { url: "assets/products/cup_nescafe_front.jpeg", label: "Reference Photo 07 — Commercial Flexo Print" },
+        { url: "assets/products/cup_folk_side.jpeg", label: "Reference Photo 08 — Warli Art Motifs" },
+        { url: "assets/products/cup_folk_bottom.jpeg", label: "Reference Photo 09 — Bottom Seal & Inscription" },
+        { url: "assets/products/cup_top_rim.jpeg", label: "Reference Photo 10 — Top Rim Geometry" }
       ],
       modelType: "cup",
       accentColor: "#E09852",
@@ -110,12 +105,8 @@ const DATA_CONFIG = {
         { label: "Format", value: "Continuous Roll or Interfolded Sheets" }
       ],
       photos: [
-        { url: "assets/wrap_paper_roll.jpg", label: "Master Spool Roll — The Artisan Cafe Custom Stamp" },
-        { url: "assets/wrap_final_mockup.jpg", label: "Deli Line Application — Heirloom Provisions Tartan Pattern" }
-      ],
-      referenceVideos: [
-        { url: "rec 2.mp4", title: "Reference 2: Cathode Industrial Viewport" },
-        { url: "rec 3.mp4", title: "Reference 3: 3D Kinetic Carousel" }
+        { url: "assets/wrap_paper_roll.jpg", label: "Reference Photo 01 — Master Spool Roll with Repeating Stamp" },
+        { url: "assets/wrap_final_mockup.jpg", label: "Reference Photo 02 — Deli Line Tartan Wrap Pattern" }
       ],
       modelType: "wrap_roll",
       accentColor: "#4FB385",
@@ -142,11 +133,8 @@ const DATA_CONFIG = {
         { label: "Branding", value: "Custom Die-Cut Kraft Wrap Sleeves & IML" }
       ],
       photos: [
-        { url: "assets/products/containers_prep_stack.jpg", label: "Production Inspection — Triple Stack with Clear Lids" },
-        { url: "assets/containers_final_mockup.jpg", label: "Retail Presentation — Terra Kitchen Custom Kraft Sleeve" }
-      ],
-      referenceVideos: [
-        { url: "rec 4.mp4", title: "Reference 4: Audio/Mechanical Exploded View Inspection" }
+        { url: "assets/products/containers_prep_stack.jpg", label: "Reference Photo 01 — Triple Stack Inspection with Lids" },
+        { url: "assets/containers_final_mockup.jpg", label: "Reference Photo 02 — Custom Printed Kraft Wrap Sleeve" }
       ],
       modelType: "container",
       accentColor: "#3B82F6",
@@ -173,11 +161,7 @@ const DATA_CONFIG = {
         { label: "Fold Type", value: "1/4 Cocktail Fold or 1/8 Dinner Fold" }
       ],
       photos: [
-        { url: "assets/tissue_papers_luxury.jpg", label: "Cocktail Napkins — The Cask & Oak Gold Foil & Kraft Stack" },
-        { url: "assets/tissue_papers_luxury.jpg", label: "Tabletop Ensemble — Deep Obsidian & Kraft Texture" }
-      ],
-      referenceVideos: [
-        { url: "rec 1.mp4", title: "Reference 1: Card Rotation & Dynamic Shading" }
+        { url: "assets/tissue_papers_luxury.jpg", label: "Reference Photo 01 — The Cask & Oak Gold Foil & Kraft Stack" }
       ],
       modelType: "tissue",
       accentColor: "#F59E0B",
@@ -185,90 +169,56 @@ const DATA_CONFIG = {
     }
   },
 
-  // 2. CENTRALIZED PRICING TIERS
+  // 2. CENTRALIZED PRICING TIERS & EXACT PRICING DATA
   productPrices: {
-    cups: {
-      currency: "USD",
-      currencySymbol: "$",
-      leadTime: "10–12 business days",
-      plateSetupFee: "$65 per color cylinder (One-time, waived above 25k units)",
-      shippingEstimate: "Calculated based on pallet volume & destination",
-      tiers: [
-        { quantity: 5000, unitPrice: 0.082, total: 410.00, discount: "Standard Base" },
-        { quantity: 10000, unitPrice: 0.068, total: 680.00, discount: "17% Savings" },
-        { quantity: 25000, unitPrice: 0.054, total: 1350.00, discount: "34% Savings (Free Setup)" },
-        { quantity: 50000, unitPrice: 0.045, total: 2250.00, discount: "45% Savings (Enterprise)" },
-        { quantity: 100000, unitPrice: 0.038, total: 3800.00, discount: "53% Savings (Wholesale)" }
-      ],
-      customOptions: [
-        { name: "Double Wall Insulation", extraPerUnit: 0.018 },
-        { name: "PLA Bio-Compostable Liner", extraPerUnit: 0.012 },
-        { name: "Gold / Silver Foil Stamping", extraPerUnit: 0.024 },
-        { name: "Matching CPLC Sip Lids", extraPerUnit: 0.028 }
+    cupsWithoutLid: {
+      category: "cups",
+      title: "Prices for cups (without lid)",
+      sections: [
+        {
+          heading: "-> Single wall 150ml",
+          items: [
+            { label: "-- 165 gsm", price: "2.5rs" },
+            { label: "-- 185 gsm", price: "2.8rs" }
+          ]
+        },
+        {
+          heading: "-> Double wall 250ml",
+          items: [
+            { label: "-- 225 gsm", price: "3.3rs" }
+          ]
+        }
       ]
     },
 
-    wraps: {
-      currency: "USD",
-      currencySymbol: "$",
-      leadTime: "8–10 business days",
-      plateSetupFee: "$50 per cylinder (Waived over 20,000 sheets)",
-      shippingEstimate: "Flat-packed moisture-sealed carton packing",
-      tiers: [
-        { quantity: 10000, unitPrice: 0.042, total: 420.00, discount: "Standard Base" },
-        { quantity: 25000, unitPrice: 0.033, total: 825.00, discount: "21% Savings" },
-        { quantity: 50000, unitPrice: 0.026, total: 1300.00, discount: "38% Savings (Free Setup)" },
-        { quantity: 100000, unitPrice: 0.021, total: 2100.00, discount: "50% Savings (Enterprise)" },
-        { quantity: 250000, unitPrice: 0.016, total: 4000.00, discount: "62% Savings (High Volume)" }
+    cupsWithLid: {
+      category: "cups",
+      title: "Prices for the cup with lid",
+      statusNotice: "will be updated shortly, currently not providing prices"
+    },
+
+    rollPaper: {
+      category: "wraps",
+      title: "Prices for roll paper -",
+      items: [
+        { label: "1) 13×13 inches", price: ":- 3.8" },
+        { label: "2) 13×15 inches", price: ":- 4.0" },
+        { label: "3) 12×12 inches", price: ":- 3.8" },
+        { label: "4) 12×15 inches", price: ":- 4.0" }
       ],
-      customOptions: [
-        { name: "Brown Unbleached Kraft Stock", extraPerUnit: 0.004 },
-        { name: "Heavy Grease Kit 9 Upgrade", extraPerUnit: 0.006 },
-        { name: "Continuous Roll Rewind (300m)", extraPerUnit: 0.015 },
-        { name: "Two-Color Registration", extraPerUnit: 0.008 }
-      ]
+      footerNote: "Rs per sheet"
     },
 
     containers: {
-      currency: "USD",
-      currencySymbol: "$",
-      leadTime: "12–14 business days",
-      plateSetupFee: "$90 offset die & sleeve setup (Waived over 15,000 units)",
-      shippingEstimate: "Nestable carton cases, 250 sets per case",
-      tiers: [
-        { quantity: 3000, unitPrice: 0.28, total: 840.00, discount: "Standard Base" },
-        { quantity: 5000, unitPrice: 0.24, total: 1200.00, discount: "14% Savings" },
-        { quantity: 10000, unitPrice: 0.20, total: 2000.00, discount: "28% Savings" },
-        { quantity: 25000, unitPrice: 0.165, total: 4125.00, discount: "41% Savings (Free Setup)" },
-        { quantity: 50000, unitPrice: 0.138, total: 6900.00, discount: "51% Savings (Wholesale)" }
-      ],
-      customOptions: [
-        { name: "Custom Printed Kraft Sleeve", extraPerUnit: 0.045 },
-        { name: "Anti-Fog Coated Snap Lid", extraPerUnit: 0.022 },
-        { name: "2-Compartment Divider", extraPerUnit: 0.015 },
-        { name: "Custom In-Mold Brand Emboss", extraPerUnit: 0.035 }
-      ]
+      category: "containers",
+      title: "Prices for containers",
+      statusNotice: "will be updated shortly, currently not providing prices"
     },
 
     tissues: {
-      currency: "USD",
-      currencySymbol: "$",
-      leadTime: "7–9 business days",
-      plateSetupFee: "$45 stereo plate fee (Waived over 25k units)",
-      shippingEstimate: "Poly-bagged bundles of 250 napkins in outer carton",
-      tiers: [
-        { quantity: 10000, unitPrice: 0.035, total: 350.00, discount: "Standard Base" },
-        { quantity: 25000, unitPrice: 0.026, total: 650.00, discount: "25% Savings (Free Setup)" },
-        { quantity: 50000, unitPrice: 0.019, total: 950.00, discount: "45% Savings" },
-        { quantity: 100000, unitPrice: 0.014, total: 1400.00, discount: "60% Savings" },
-        { quantity: 250000, unitPrice: 0.0098, total: 2450.00, discount: "72% Savings (Bulk Tier)" }
-      ],
-      customOptions: [
-        { name: "3-Ply Luxury Upgrade (48 GSM)", extraPerUnit: 0.006 },
-        { name: "Full Metallic Foil Stamp", extraPerUnit: 0.012 },
-        { name: "Natural Kraft Pulp Base", extraPerUnit: 0.002 },
-        { name: "Linen-Embossed Edge Border", extraPerUnit: 0.004 }
-      ]
+      category: "tissues",
+      title: "Prices for tissue paper",
+      statusNotice: "will be updated shortly, currently not providing prices"
     }
   },
 

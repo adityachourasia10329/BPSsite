@@ -549,11 +549,60 @@ html, body {
   100% { opacity: 0.9; }
 }
 
+/* Right Floating Dock (Price Tab above Viewport Controls) */
+.right-floating-dock {
+  position: absolute;
+  bottom: 80px;
+  right: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
+  z-index: 25;
+  pointer-events: none;
+}
+
+.right-price-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: var(--bg-glass-elevated);
+  border: 1px solid var(--border-active);
+  backdrop-filter: var(--backdrop-blur);
+  border-radius: var(--radius-pill);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  box-shadow: var(--shadow-elevated);
+  pointer-events: auto;
+  transition: all var(--transition-fast);
+}
+
+.right-price-btn:hover {
+  background: var(--text-primary);
+  color: var(--text-inverse);
+  border-color: var(--text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+}
+
+.right-price-btn svg {
+  width: 15px;
+  height: 15px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
 /* Viewport Utility Controls (Zoom Slider, Mode Toggles) */
 .viewport-floating-controls {
-  position: absolute;
-  bottom: 110px;
-  right: 28px;
+  position: relative;
+  bottom: auto;
+  right: auto;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -563,7 +612,6 @@ html, body {
   padding: 10px;
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-subtle);
-  z-index: 15;
   pointer-events: auto;
 }
 
@@ -747,25 +795,223 @@ html, body {
   pointer-events: none;
 }
 
+/* Dual Layout: Left (Branding & Continuous 3D Marquee) | Right (Query Box) */
+.gate-dual-layout {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 28px;
+  width: 100%;
+  max-width: 1040px;
+  max-height: 90vh;
+  align-items: stretch;
+  transform: translateY(0) scale(1);
+  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+}
+
+.modal-overlay.animating-out .gate-dual-layout {
+  transform: translateY(30px) scale(0.92);
+  opacity: 0;
+}
+
 .gate-card {
   width: 100%;
-  max-width: 520px;
+  height: 100%;
   max-height: 90vh;
   overflow-y: auto;
   background: var(--bg-glass-elevated);
   border: 1px solid var(--border-active);
   backdrop-filter: var(--backdrop-blur);
   border-radius: var(--radius-xl);
-  padding: 32px;
+  padding: 30px;
   box-shadow: var(--shadow-elevated), var(--shadow-glow);
   position: relative;
-  transform: translateY(0) scale(1);
-  transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+  display: flex;
+  flex-direction: column;
 }
 
-.modal-overlay.animating-out .gate-card {
-  transform: translateY(30px) scale(0.92);
-  opacity: 0;
+/* Left Branding Box */
+.gate-left-box {
+  background: linear-gradient(160deg, rgba(26, 26, 34, 0.88), rgba(16, 16, 22, 0.94));
+  border-color: rgba(255, 255, 255, 0.16);
+  justify-content: space-between;
+}
+
+.gate-branding-heading {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-top: 10px;
+  margin-bottom: 8px;
+}
+
+.gate-branding-subheading {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-amber);
+  letter-spacing: 0.04em;
+  margin-bottom: 14px;
+}
+
+/* Continuous 3D Miniature & Photo Marquee Stage */
+.gate-marquee-viewport {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+  margin: 12px 0 20px 0;
+  border-radius: var(--radius-lg);
+  background: rgba(0, 0, 0, 0.32);
+  border: 1px solid var(--border-subtle);
+  perspective: 750px;
+  display: flex;
+  align-items: center;
+}
+
+.marquee-3d-track {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+.marquee-card {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  width: 136px;
+  height: 196px;
+  background: rgba(22, 22, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.5);
+  will-change: transform, opacity;
+  transform-origin: center center;
+}
+
+.marquee-card-badge {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--accent-amber);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.marquee-card-media {
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.marquee-mini-canvas {
+  width: 120px;
+  height: 120px;
+  display: block;
+}
+
+.marquee-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+}
+
+.marquee-card-title {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-primary);
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
+}
+
+.gate-left-features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.gate-feature-pill {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-secondary);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+/* Quick Resume Pill Button (User Attachment 4 Style) */
+.quick-resume-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 18px;
+}
+
+.quick-resume-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: #0E0E12;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: var(--radius-pill);
+  color: #F7F7F5;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+}
+
+.quick-resume-btn:hover {
+  border-color: var(--accent-emerald);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(79, 179, 133, 0.3);
+  background: #14141A;
+}
+
+.quick-resume-btn .status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--accent-emerald);
+  box-shadow: 0 0 8px var(--accent-emerald);
+}
+
+.quick-resume-btn svg {
+  stroke: var(--accent-emerald);
+  transition: transform var(--transition-fast);
+}
+
+.quick-resume-btn:hover svg {
+  transform: translateX(2px);
 }
 
 .gate-header {
@@ -1120,54 +1366,105 @@ html, body {
   transform: translateY(0) scale(1);
 }
 
-/* Pricing Table Modal Styling */
-.pricing-tiers-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin: 18px 0;
+/* Structured Price List & Cards (Requirement 8) */
+.price-order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 14px 0;
 }
 
-.pricing-tiers-table th {
-  text-align: left;
+.price-header-meta {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--accent-amber);
+  letter-spacing: 0.08em;
+}
+
+.price-structured-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 16px 20px;
+}
+
+.price-card-title {
+  font-family: var(--font-heading);
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 12px;
+  border-bottom: 1px solid var(--border-subtle);
+  padding-bottom: 8px;
+}
+
+.price-group-block {
+  margin-bottom: 12px;
+}
+
+.price-group-header {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 0 6px 14px;
+  font-size: 13px;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.price-row:last-child {
+  border-bottom: none;
+}
+
+.price-label {
+  font-family: var(--font-mono);
+  color: var(--text-secondary);
+}
+
+.price-value {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--accent-emerald);
+}
+
+.price-footer-unit {
   font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
   color: var(--text-muted);
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border-subtle);
+  text-align: right;
+  margin-top: 8px;
+  text-transform: uppercase;
 }
 
-.pricing-tiers-table td {
-  padding: 12px;
+.price-notice-card {
+  border-left: 3px solid var(--accent-amber);
+  background: rgba(224, 152, 82, 0.04);
+}
+
+.price-notice-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
   font-size: 13px;
-  border-bottom: 1px solid var(--border-subtle);
-  color: var(--text-primary);
-}
-
-.pricing-tiers-table tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
-}
-
-.pricing-tiers-table .tier-qty {
-  font-family: var(--font-mono);
-  font-weight: 700;
-}
-
-.pricing-tiers-table .tier-unit {
-  font-family: var(--font-mono);
-  color: var(--accent-emerald);
-  font-weight: 700;
-}
-
-.pricing-badge {
-  display: inline-block;
-  font-size: 10px;
-  font-family: var(--font-mono);
-  padding: 2px 8px;
-  border-radius: var(--radius-pill);
-  background: rgba(255, 255, 255, 0.08);
   color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.price-notice-item .bullet-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-amber);
+  margin-top: 6px;
+  flex-shrink: 0;
 }
 
 /* Volume Estimator Interactive Slider */
@@ -1363,6 +1660,21 @@ html, body {
     padding: 5px 10px;
     font-size: 11px;
   }
+
+  .gate-dual-layout {
+    grid-template-columns: 1fr;
+    max-height: 92vh;
+    overflow-y: auto;
+  }
+
+  .gate-left-box {
+    max-height: 380px;
+  }
+
+  .right-floating-dock {
+    bottom: 85px;
+    right: 16px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -1393,13 +1705,13 @@ html, body {
     display: none; /* Hide dense telemetry on small mobile screens */
   }
 
-  .viewport-floating-controls {
-    bottom: 95px;
+  .right-floating-dock {
+    bottom: 80px;
     right: 12px;
   }
 
   .view-mode-pill {
-    bottom: 95px;
+    bottom: 80px;
     left: 12px;
   }
 

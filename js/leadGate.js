@@ -23,22 +23,47 @@ class LeadGate {
   init() {
     if (!this.gateOverlayEl || !this.gateFormEl) return;
 
-    // Check if previously authenticated in this browser session (supporting migration)
+    // Requirement 6: Always open from the query box on reload
+    this.lockWorkspace();
+
+    // Check if user has previously entered details
     const savedSession = localStorage.getItem(this.storageKey) || localStorage.getItem('aura_b2b_lead_session');
+    const quickResumeContainer = document.getElementById('quick-resume-container');
+    const quickResumeBtn = document.getElementById('btn-quick-resume');
+    const quickResumeText = document.getElementById('quick-resume-text');
+
     if (savedSession) {
       try {
-        this.currentLead = JSON.parse(savedSession);
-        this.unlockWorkspace(false); // immediate unlock without slow animation
-        this.updateSessionUI();
-        return;
+        const lead = JSON.parse(savedSession);
+        this.currentLead = lead;
+
+        // Display the quick resume tab with user name and business type: "B2B: aditya (cafe)"
+        if (quickResumeContainer && quickResumeBtn && quickResumeText) {
+          const biz = lead.businessType ? lead.businessType.toLowerCase() : 'enterprise';
+          const name = lead.fullName ? lead.fullName.toLowerCase() : 'verified';
+          quickResumeText.textContent = `B2B: ${name} (${biz})`;
+          quickResumeContainer.style.display = 'block';
+
+          // Clicking this tab auto-fills details and immediately enters the site!
+          quickResumeBtn.addEventListener('click', (ev) => {
+            ev.preventDefault();
+            this.prefillForm(lead);
+            this.updateSessionUI();
+            this.unlockWorkspace(true);
+          });
+        }
+
+        // Pre-fill form inputs as well
+        this.prefillForm(lead);
       } catch (e) {
-        console.warn('Failed parsing saved lead session, re-prompting gate.', e);
+        console.warn('Failed parsing saved lead session', e);
         localStorage.removeItem(this.storageKey);
       }
+    } else {
+      if (quickResumeContainer) {
+        quickResumeContainer.style.display = 'none';
+      }
     }
-
-    // Lock workspace preview
-    this.lockWorkspace();
 
     // Bind form submission
     this.gateFormEl.addEventListener('submit', (e) => this.handleSubmit(e));
@@ -50,6 +75,26 @@ class LeadGate {
         e.stopPropagation();
       }
     }, true);
+  }
+
+  prefillForm(lead) {
+    if (!lead) return;
+    const nameInput = document.getElementById('lead-name');
+    const bizInput = document.getElementById('lead-business');
+    const emailInput = document.getElementById('lead-email');
+    const phoneInput = document.getElementById('lead-phone');
+    const queryInput = document.getElementById('lead-query');
+
+    if (nameInput && lead.fullName) nameInput.value = lead.fullName;
+    if (bizInput && lead.businessType) bizInput.value = lead.businessType;
+    if (emailInput && lead.email) emailInput.value = lead.email;
+    if (phoneInput && lead.phone) phoneInput.value = lead.phone;
+    if (queryInput && lead.query) queryInput.value = lead.query;
+
+    if (lead.referralSource) {
+      const radio = document.querySelector(`input[name="lead_referral"][value="${lead.referralSource}"]`);
+      if (radio) radio.checked = true;
+    }
   }
 
   isLocked() {

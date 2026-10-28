@@ -1,10 +1,9 @@
 /**
  * =============================================================================
- * MULTI-ANGLE STUDIO PHOTO & VIDEO SCRUBBER ENGINE
+ * REFERENCE PHOTO SCRUBBER ENGINE
  * =============================================================================
- * Replicates the motion physics, inertia, and scrubbing presentation shown
- * in reference recordings (rec 1 - 4), allowing users to scrub fluidly through
- * multi-angle image sequences and high-definition reference video footage.
+ * Allows users to scrub fluidly through multi-angle high-resolution reference
+ * product photography with inertia damping, zoom scaling, and frame tracking.
  */
 
 class PhotoScrubber {
@@ -26,12 +25,9 @@ class PhotoScrubber {
     this.startX = 0;
     this.startY = 0;
     this.zoomScale = 1.0;
-    this.panOffset = { x: 0, y: 0 };
 
     this.imgElement = document.getElementById('scrubber-image');
     this.frameIndicator = document.getElementById('scrubber-frame-tag');
-    this.videoElement = document.getElementById('scrubber-video');
-    this.isVideoMode = false;
 
     this.init();
   }
@@ -48,26 +44,11 @@ class PhotoScrubber {
     this.currentIndex = 0;
     this.fractionalIndex = 0;
     this.velocity = 0;
-    this.isVideoMode = false;
 
-    if (this.videoElement) {
-      this.videoElement.style.display = 'none';
-      this.videoElement.pause();
-    }
     if (this.imgElement) {
       this.imgElement.style.display = 'block';
       this.updateImage();
     }
-  }
-
-  setVideo(videoUrl) {
-    if (!videoUrl || !this.videoElement) return;
-    this.isVideoMode = true;
-    if (this.imgElement) this.imgElement.style.display = 'none';
-    this.videoElement.style.display = 'block';
-    this.videoElement.src = videoUrl;
-    this.videoElement.load();
-    this.videoElement.currentTime = 0;
   }
 
   updateImage() {
@@ -78,7 +59,7 @@ class PhotoScrubber {
     if (this.frameIndicator) {
       const current = String(this.currentIndex + 1).padStart(2, '0');
       const total = String(this.photos.length).padStart(2, '0');
-      this.frameIndicator.textContent = `FRAME ${current}/${total} • ${item.label || 'Studio Angle'}`;
+      this.frameIndicator.textContent = `REFERENCE PHOTO ${current}/${total} • ${item.label || 'Product Angle'}`;
     }
 
     if (this.options.onFrameChange) {
@@ -103,16 +84,8 @@ class PhotoScrubber {
       if (!this.isDragging) return;
 
       const deltaX = e.clientX - this.startX;
-      const deltaY = e.clientY - this.startY;
 
-      if (this.isVideoMode && this.videoElement && this.videoElement.duration) {
-        // Scrub video time with horizontal drag
-        const timeDelta = (deltaX / window.innerWidth) * 4.0;
-        let newTime = this.videoElement.currentTime + timeDelta;
-        newTime = Math.max(0, Math.min(this.videoElement.duration, newTime));
-        this.videoElement.currentTime = newTime;
-      } else if (this.photos.length > 1) {
-        // Scrub image sequence
+      if (this.photos.length > 1) {
         const stepDelta = -(deltaX * 0.05);
         this.velocity = stepDelta;
         this.fractionalIndex += stepDelta;
@@ -151,7 +124,7 @@ class PhotoScrubber {
   animate() {
     requestAnimationFrame(this.animate);
 
-    if (!this.isVideoMode && this.photos.length > 1) {
+    if (this.photos.length > 1) {
       if (!this.isDragging) {
         this.velocity *= this.options.damping;
         this.fractionalIndex += this.velocity;

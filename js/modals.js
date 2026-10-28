@@ -175,77 +175,83 @@ class ModalsController {
   }
 
   renderPriceData() {
-    const priceData = window.DATA_CONFIG?.productPrices?.[this.currentCategory];
-    const productMeta = window.DATA_CONFIG?.productMedia?.[this.currentCategory];
-    if (!priceData) return;
-
+    const allPrices = window.DATA_CONFIG?.productPrices;
     const titleEl = document.getElementById('price-modal-title');
-    const leadTimeEl = document.getElementById('price-lead-time');
-    const setupFeeEl = document.getElementById('price-setup-fee');
-    const tableBody = document.getElementById('pricing-table-body');
+    const priceContainer = document.getElementById('price-sections-container');
+    if (!allPrices || !priceContainer) return;
 
-    if (titleEl && productMeta) {
-      titleEl.textContent = `Wholesale Pricing Structure: ${productMeta.name}`;
-    }
-    if (leadTimeEl) leadTimeEl.textContent = priceData.leadTime;
-    if (setupFeeEl) setupFeeEl.textContent = priceData.plateSetupFee;
-
-    if (tableBody) {
-      tableBody.innerHTML = priceData.tiers.map((tier) => `
-        <tr>
-          <td class="tier-qty">${tier.quantity.toLocaleString()} units</td>
-          <td class="tier-unit">${priceData.currencySymbol}${tier.unitPrice.toFixed(3)}</td>
-          <td><strong>${priceData.currencySymbol}${tier.total.toLocaleString(undefined, {minimumFractionDigits: 2})}</strong></td>
-          <td><span class="pricing-badge">${tier.discount}</span></td>
-        </tr>
-      `).join('');
+    if (titleEl) {
+      titleEl.textContent = "Prices";
     }
 
-    // Set initial slider value to second tier
+    priceContainer.innerHTML = `
+      <div class="price-order-list">
+        <div class="price-header-meta">Prices-----</div>
+
+        <!-- 1. Cups without lid -->
+        <div class="price-structured-card">
+          <div class="price-card-title">Prices for cups (without lid)</div>
+          <div class="price-group-block">
+            <div class="price-group-header">-&gt; Single wall 150ml</div>
+            <div class="price-row"><span class="price-label">--165 gsm</span><span class="price-value">2.5rs</span></div>
+            <div class="price-row"><span class="price-label">--185 gsm</span><span class="price-value">2.8rs</span></div>
+          </div>
+          <div class="price-group-block">
+            <div class="price-group-header">-&gt; Double wall 250ml</div>
+            <div class="price-row"><span class="price-label">--225 gsm</span><span class="price-value">3.3rs</span></div>
+          </div>
+        </div>
+
+        <!-- 2. Roll paper -->
+        <div class="price-structured-card">
+          <div class="price-card-title">Prices for roll paper -</div>
+          <div class="price-row"><span class="price-label">1)13×13 inches</span><span class="price-value">:-3.8</span></div>
+          <div class="price-row"><span class="price-label">2)13×15 inches</span><span class="price-value">:-4.0</span></div>
+          <div class="price-row"><span class="price-label">3)12×12 inches</span><span class="price-value">:- 3.8</span></div>
+          <div class="price-row"><span class="price-label">4)12×15 inches</span><span class="price-value">:-4.0</span></div>
+          <div class="price-footer-unit">Rs per sheet</div>
+        </div>
+
+        <!-- 3. Cup with lid, tissue paper, containers pending notice -->
+        <div class="price-structured-card price-notice-card">
+          <div class="price-notice-item">
+            <span class="bullet-dot"></span>
+            <span>Prices for the cup with lid, tissue paper and containers: <em>will be updated shortly, currently not providing prices</em></span>
+          </div>
+        </div>
+      </div>
+    `;
+
+    // Initialize calculator
     const slider = document.getElementById('pricing-volume-slider');
-    if (slider && priceData.tiers.length > 1) {
-      slider.min = priceData.tiers[0].quantity;
-      slider.max = priceData.tiers[priceData.tiers.length - 1].quantity;
-      slider.step = 1000;
-      slider.value = priceData.tiers[1].quantity;
+    if (slider) {
       this.handleVolumeChange(parseInt(slider.value, 10));
     }
   }
 
   handleVolumeChange(qty) {
-    const priceData = window.DATA_CONFIG?.productPrices?.[this.currentCategory];
-    if (!priceData) return;
-
     const unitsDisplay = document.getElementById('calc-units-number');
     const unitPriceDisplay = document.getElementById('calc-unit-price');
     const totalDisplay = document.getElementById('calc-total-price');
     const savingsDisplay = document.getElementById('calc-savings-badge');
 
-    if (unitsDisplay) unitsDisplay.textContent = `${qty.toLocaleString()} Units`;
+    if (unitsDisplay) unitsDisplay.textContent = `${qty.toLocaleString()} Units / Sheets`;
 
-    // Linear interpolation between tiers
-    let matchedTier = priceData.tiers[0];
-    for (let i = 0; i < priceData.tiers.length; i++) {
-      if (qty >= priceData.tiers[i].quantity) {
-        matchedTier = priceData.tiers[i];
-      }
+    // Base calculation example based on 150ml Single wall 165 gsm (2.5rs) or roll paper (3.8rs)
+    let unitRate = 2.5;
+    let label = "Based on Cup 150ml (165 gsm)";
+    if (this.currentCategory === 'wraps') {
+      unitRate = 3.8;
+      label = "Based on Roll Paper 12×12\"";
     }
 
-    const estimatedUnitPrice = matchedTier.unitPrice;
-    const subtotal = qty * estimatedUnitPrice;
-    const baseTotal = qty * priceData.tiers[0].unitPrice;
-    const savings = Math.max(0, baseTotal - subtotal);
+    const subtotal = qty * unitRate;
 
-    if (unitPriceDisplay) unitPriceDisplay.textContent = `${priceData.currencySymbol}${estimatedUnitPrice.toFixed(3)}`;
-    if (totalDisplay) totalDisplay.textContent = `${priceData.currencySymbol}${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    if (unitPriceDisplay) unitPriceDisplay.textContent = `₹${unitRate.toFixed(2)} / unit`;
+    if (totalDisplay) totalDisplay.textContent = `₹${subtotal.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
     if (savingsDisplay) {
-      if (savings > 0) {
-        savingsDisplay.textContent = `Save ${priceData.currencySymbol}${savings.toFixed(0)} vs Base`;
-        savingsDisplay.style.color = 'var(--accent-emerald)';
-      } else {
-        savingsDisplay.textContent = 'Standard MOQ Tier';
-        savingsDisplay.style.color = 'var(--text-secondary)';
-      }
+      savingsDisplay.textContent = label;
+      savingsDisplay.style.color = 'var(--text-secondary)';
     }
   }
 

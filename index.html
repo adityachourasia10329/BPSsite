@@ -71,11 +71,10 @@
       <!-- Three.js Canvas -->
       <canvas id="canvas-3d"></canvas>
 
-      <!-- Alternative 2D Photo / Video Scrubber View -->
+      <!-- Alternative 2D Reference Photo Scrubber View -->
       <div id="photo-scrubber-view">
         <div class="scrubber-image-wrapper">
-          <img id="scrubber-image" alt="Product Studio Angle Scan" src="assets/products/cup_spot_lie_01.jpeg">
-          <video id="scrubber-video" loop muted playsinline style="display:none; max-width:100%; max-height:65vh; border-radius:16px; border:1px solid var(--border-subtle);"></video>
+          <img id="scrubber-image" alt="Product Reference Photo" src="assets/products/cup_warli_nolid.jpg">
         </div>
       </div>
 
@@ -121,35 +120,36 @@
 
       <!-- View Mode Pill (Bottom Left) -->
       <div class="view-mode-pill">
-        <button class="view-mode-btn active" data-view-mode="3d" id="btn-mode-3d">3D WebGL</button>
-        <button class="view-mode-btn" data-view-mode="photo" id="btn-mode-photo">Studio Scans</button>
-        <button class="view-mode-btn" data-view-mode="video" id="btn-mode-video">Reference Motion</button>
+        <button class="view-mode-btn active" data-view-mode="3d" id="btn-mode-3d">3D Model</button>
+        <button class="view-mode-btn" data-view-mode="photo" id="btn-mode-photo">reference photo</button>
       </div>
 
-      <!-- Viewport Floating Controls (Bottom Right) -->
-      <div class="viewport-floating-controls">
-        <button class="control-btn" id="btn-autorotate" title="Toggle 360° Auto-Orbit" aria-label="Auto Rotate">⟳</button>
-        <button class="control-btn" id="btn-exploded-view" title="Toggle Exploded Mechanical View" aria-label="Exploded View">⤢</button>
-        <button class="control-btn" id="btn-wireframe" title="Toggle Structural Wireframe" aria-label="Wireframe">⌗</button>
-        <button class="control-btn" id="btn-reset-view" title="Reset Camera Perspective" aria-label="Reset View">⊙</button>
-        <button class="control-btn" id="btn-zoom-in" title="Zoom In" aria-label="Zoom In">+</button>
-        <div class="zoom-slider-container">
-          <input type="range" id="viewport-zoom-slider" min="0" max="100" value="50" title="Zoom Level" aria-label="Zoom Level">
+      <!-- Right Floating Dock (Price Tab above Viewport Controls) -->
+      <div class="right-floating-dock">
+        <button class="right-price-btn" id="btn-action-price" aria-haspopup="dialog" title="View Wholesale Pricing">
+          <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
+          <span>Price &amp; Tiers</span>
+        </button>
+
+        <!-- Viewport Floating Controls (Zoom Slider & Utilities) -->
+        <div class="viewport-floating-controls">
+          <button class="control-btn" id="btn-autorotate" title="Toggle 360° Auto-Orbit" aria-label="Auto Rotate">⟳</button>
+          <button class="control-btn" id="btn-exploded-view" title="Toggle Exploded Mechanical View" aria-label="Exploded View">⤢</button>
+          <button class="control-btn" id="btn-wireframe" title="Toggle Structural Wireframe" aria-label="Wireframe">⌗</button>
+          <button class="control-btn" id="btn-reset-view" title="Reset Camera Perspective" aria-label="Reset View">⊙</button>
+          <button class="control-btn" id="btn-zoom-in" title="Zoom In" aria-label="Zoom In">+</button>
+          <div class="zoom-slider-container">
+            <input type="range" id="viewport-zoom-slider" min="0" max="100" value="0" title="Zoom Level" aria-label="Zoom Level">
+          </div>
+          <button class="control-btn" id="btn-zoom-out" title="Zoom Out" aria-label="Zoom Out">-</button>
         </div>
-        <button class="control-btn" id="btn-zoom-out" title="Zoom Out" aria-label="Zoom Out">-</button>
       </div>
     </main>
 
-    <!-- BOTTOM DUAL ACTION CONTROLS ("PRICE" & "HOW WILL YOUR PRODUCT LOOK") -->
+    <!-- BOTTOM ACTION DOCK ("HOW WILL YOUR PRODUCT LOOK") -->
     <div class="bottom-dock">
       <div class="action-pill-bar">
-        <!-- Button 1: Price -->
-        <button class="action-pill-btn btn-accent" id="btn-action-price" aria-haspopup="dialog">
-          <svg viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-          <span>Price & Tiers</span>
-        </button>
-
-        <!-- Button 2: How Will Your Product Look -->
+        <!-- Button: How Will Your Product Look -->
         <button class="action-pill-btn" id="btn-action-final-look" aria-haspopup="dialog">
           <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           <span>How Will Your Product Look</span>
@@ -164,105 +164,142 @@
        MANDATORY LEAD-CAPTURE GATE MODAL (NO LOGIN / SIGNUP)
        ========================================================================= -->
   <div class="modal-overlay" id="lead-gate-modal" role="dialog" aria-modal="true" aria-labelledby="gate-title-id">
-    <div class="gate-card">
-      <div class="gate-header">
-        <div class="gate-badge">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-          <span>B2B VERIFICATION GATE</span>
+    <div class="gate-dual-layout">
+
+      <!-- LEFT BOX: BPS Branding & Continuous 3D/Photo Marquee Animation -->
+      <div class="gate-card gate-left-box">
+        <div class="gate-left-header">
+          <div class="gate-badge">
+            <span class="status-dot"></span>
+            <span>MANUFACTURING &amp; PRINTING SOLUTIONS</span>
+          </div>
+          <h2 class="gate-branding-heading">BPS - Branding / Advertising and Printing Solutions</h2>
+          <p class="gate-branding-subheading">We are -</p>
         </div>
-        <h2 class="gate-title" id="gate-title-id">Access 360° Product Studio</h2>
-        <p class="gate-subtitle">Direct manufacturer access for commercial cafes, cloud kitchens, QSR chains, and wholesale packaging procurement.</p>
+
+        <!-- Continuous animation stage for miniature 3d models & reference photos -->
+        <div class="gate-marquee-viewport" id="gate-marquee-stage">
+          <!-- Populated and continuously rendered by GateMarquee -->
+        </div>
+
+        <div class="gate-left-features">
+          <div class="gate-feature-pill">Industrial Precision</div>
+          <div class="gate-feature-pill">Food-Grade Flexo</div>
+          <div class="gate-feature-pill">Ultrasonic Seam Crimp</div>
+        </div>
       </div>
 
-      <form id="lead-gate-form" class="gate-form" novalidate>
-        <!-- 1. Full Name -->
-        <div class="form-group">
-          <label class="form-label" for="lead-name">
-            <span>Full Name</span>
-            <span class="required-mark">* Required</span>
-          </label>
-          <input type="text" id="lead-name" class="form-input" placeholder="e.g. Elena Rostova" required autocomplete="name">
-          <span class="form-error-msg"></span>
+      <!-- RIGHT BOX: Query Box (Lead Capture Form & Quick-Resume Tab) -->
+      <div class="gate-card gate-right-box">
+        <!-- Quick-Resume Pill Tab (Visible when user has previously entered details) -->
+        <div id="quick-resume-container" class="quick-resume-container" style="display:none;">
+          <button type="button" class="quick-resume-btn" id="btn-quick-resume" title="Click to auto-fill details and enter 360° Studio">
+            <span class="status-dot"></span>
+            <span id="quick-resume-text">B2B: aditya (cafe)</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
         </div>
 
-        <!-- 2. Type of Business -->
-        <div class="form-group">
-          <label class="form-label" for="lead-business">
-            <span>Type of Business</span>
-            <span class="required-mark">* Required</span>
-          </label>
-          <input type="text" id="lead-business" class="form-input" placeholder="e.g. Specialty Café / QSR / Cloud Kitchen / Retail" required>
-          <span class="form-error-msg"></span>
-        </div>
-
-        <!-- 3. Email ID -->
-        <div class="form-group">
-          <label class="form-label" for="lead-email">
-            <span>Corporate / Business Email ID</span>
-            <span class="required-mark">* Required</span>
-          </label>
-          <input type="email" id="lead-email" class="form-input" placeholder="elena@artisanroasters.com" required autocomplete="email">
-          <span class="form-error-msg"></span>
-        </div>
-
-        <!-- 4. Phone Number -->
-        <div class="form-group">
-          <label class="form-label" for="lead-phone">
-            <span>Direct Phone / WhatsApp</span>
-            <span class="required-mark">* Required</span>
-          </label>
-          <input type="tel" id="lead-phone" class="form-input" placeholder="+1 (555) 019-2834" required autocomplete="tel">
-          <span class="form-error-msg"></span>
-        </div>
-
-        <!-- 5. Your Query / Requirements -->
-        <div class="form-group">
-          <label class="form-label" for="lead-query">
-            <span>Your Query / Estimated Requirements</span>
-            <span class="required-mark">* Required</span>
-          </label>
-          <textarea id="lead-query" class="form-textarea" placeholder="Detail your monthly volume, cup sizes, custom print specifications, or rollout timeline..." required></textarea>
-          <span class="form-error-msg"></span>
-        </div>
-
-        <!-- 6. How did you hear about us? -->
-        <div class="form-group" id="lead-referral-container">
-          <label class="form-label">
-            <span>How did you hear about us?</span>
-            <span class="required-mark">* Required</span>
-          </label>
-          <div class="pill-radio-group">
-            <div class="pill-radio-item">
-              <input type="radio" id="ref-google" name="lead_referral" value="a) Google" required>
-              <label class="pill-radio-label" for="ref-google">a) Google</label>
-            </div>
-            <div class="pill-radio-item">
-              <input type="radio" id="ref-sales" name="lead_referral" value="b) Salesperson">
-              <label class="pill-radio-label" for="ref-sales">b) Salesperson</label>
-            </div>
-            <div class="pill-radio-item">
-              <input type="radio" id="ref-tele" name="lead_referral" value="c) Telemarketers">
-              <label class="pill-radio-label" for="ref-tele">c) Telemarketers</label>
-            </div>
-            <div class="pill-radio-item">
-              <input type="radio" id="ref-social" name="lead_referral" value="d) Social Media">
-              <label class="pill-radio-label" for="ref-social">d) Social Media</label>
-            </div>
-            <div class="pill-radio-item">
-              <input type="radio" id="ref-other" name="lead_referral" value="e) Other">
-              <label class="pill-radio-label" for="ref-other">e) Other</label>
-            </div>
+        <div class="gate-header">
+          <div class="gate-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            <span>B2B VERIFICATION GATE</span>
           </div>
-          <span class="form-error-msg">Please select an attribution channel.</span>
+          <h2 class="gate-title" id="gate-title-id">Access 360° Product Studio</h2>
+          <p class="gate-subtitle">Direct manufacturer access for commercial cafes, cloud kitchens, QSR chains, and wholesale packaging procurement.</p>
         </div>
 
-        <!-- Submit Button -->
-        <button type="submit" class="gate-submit-btn" id="btn-submit-gate">
-          <span>Enter 360° Studio & Pricing</span>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
-        <p class="gate-disclaimer">Zero spam policy. Your details are solely used for technical prepress verification and wholesale quotes.</p>
-      </form>
+        <form id="lead-gate-form" class="gate-form" novalidate>
+          <!-- 1. Full Name -->
+          <div class="form-group">
+            <label class="form-label" for="lead-name">
+              <span>Full Name</span>
+              <span class="required-mark">* Required</span>
+            </label>
+            <input type="text" id="lead-name" class="form-input" placeholder="e.g. Elena Rostova" required autocomplete="name">
+            <span class="form-error-msg"></span>
+          </div>
+
+          <!-- 2. Type of Business -->
+          <div class="form-group">
+            <label class="form-label" for="lead-business">
+              <span>Type of Business</span>
+              <span class="required-mark">* Required</span>
+            </label>
+            <input type="text" id="lead-business" class="form-input" placeholder="e.g. Specialty Café / QSR / Cloud Kitchen / Retail" required>
+            <span class="form-error-msg"></span>
+          </div>
+
+          <!-- 3. Email ID -->
+          <div class="form-group">
+            <label class="form-label" for="lead-email">
+              <span>Corporate / Business Email ID</span>
+              <span class="required-mark">* Required</span>
+            </label>
+            <input type="email" id="lead-email" class="form-input" placeholder="elena@artisanroasters.com" required autocomplete="email">
+            <span class="form-error-msg"></span>
+          </div>
+
+          <!-- 4. Phone Number -->
+          <div class="form-group">
+            <label class="form-label" for="lead-phone">
+              <span>Direct Phone / WhatsApp</span>
+              <span class="required-mark">* Required</span>
+            </label>
+            <input type="tel" id="lead-phone" class="form-input" placeholder="+1 (555) 019-2834" required autocomplete="tel">
+            <span class="form-error-msg"></span>
+          </div>
+
+          <!-- 5. Your Query / Requirements -->
+          <div class="form-group">
+            <label class="form-label" for="lead-query">
+              <span>Your Query / Estimated Requirements</span>
+              <span class="required-mark">* Required</span>
+            </label>
+            <textarea id="lead-query" class="form-textarea" placeholder="Detail your monthly volume, cup sizes, custom print specifications, or rollout timeline..." required></textarea>
+            <span class="form-error-msg"></span>
+          </div>
+
+          <!-- 6. How did you hear about us? -->
+          <div class="form-group" id="lead-referral-container">
+            <label class="form-label">
+              <span>How did you hear about us?</span>
+              <span class="required-mark">* Required</span>
+            </label>
+            <div class="pill-radio-group">
+              <div class="pill-radio-item">
+                <input type="radio" id="ref-google" name="lead_referral" value="a) Google" required>
+                <label class="pill-radio-label" for="ref-google">a) Google</label>
+              </div>
+              <div class="pill-radio-item">
+                <input type="radio" id="ref-sales" name="lead_referral" value="b) Salesperson">
+                <label class="pill-radio-label" for="ref-sales">b) Salesperson</label>
+              </div>
+              <div class="pill-radio-item">
+                <input type="radio" id="ref-tele" name="lead_referral" value="c) Telemarketers">
+                <label class="pill-radio-label" for="ref-tele">c) Telemarketers</label>
+              </div>
+              <div class="pill-radio-item">
+                <input type="radio" id="ref-social" name="lead_referral" value="d) Social Media">
+                <label class="pill-radio-label" for="ref-social">d) Social Media</label>
+              </div>
+              <div class="pill-radio-item">
+                <input type="radio" id="ref-other" name="lead_referral" value="e) Other">
+                <label class="pill-radio-label" for="ref-other">e) Other</label>
+              </div>
+            </div>
+            <span class="form-error-msg">Please select an attribution channel.</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="gate-submit-btn" id="btn-submit-gate">
+            <span>Enter 360° Studio &amp; Pricing</span>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="gate-disclaimer">Zero spam policy. Your details are solely used for technical prepress verification and wholesale quotes.</p>
+        </form>
+      </div>
+
     </div>
   </div>
 
@@ -347,20 +384,8 @@
         </div>
       </div>
 
-      <!-- Tier Table -->
-      <table class="pricing-tiers-table">
-        <thead>
-          <tr>
-            <th>Volume Tier</th>
-            <th>Unit Cost</th>
-            <th>Batch Total</th>
-            <th>Benefit</th>
-          </tr>
-        </thead>
-        <tbody id="pricing-table-body">
-          <!-- Populated from config.js -->
-        </tbody>
-      </table>
+      <!-- Structured Price Lists in Exact Order -->
+      <div id="price-sections-container"></div>
 
       <!-- Interactive Volume Estimator Calculator -->
       <div class="volume-calc-box">
@@ -439,6 +464,7 @@
   <!-- Application Scripts -->
   <script src="js/vendor/three.min.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/gateMarquee.js"></script>
   <script src="js/leadGate.js"></script>
   <script src="js/visualizer3d.js"></script>
   <script src="js/photoScrubber.js"></script>

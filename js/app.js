@@ -12,27 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 2. Initialize 3D Visualizer
   const visualizer = new window.Visualizer3D('canvas-3d', {
-    onAngleUpdate: (x, y, zoom) => {
-      const rotXEl = document.getElementById('telemetry-rot-x');
-      const rotYEl = document.getElementById('telemetry-rot-y');
-      const scaleEl = document.getElementById('telemetry-scale');
-      if (rotXEl) rotXEl.textContent = `${x > 0 ? '+' : ''}${x}°`;
-      if (rotYEl) rotYEl.textContent = `${y > 0 ? '+' : ''}${y}°`;
-      if (scaleEl) scaleEl.textContent = `${zoom}x`;
-    },
     onZoomUpdate: (factor) => {
       const slider = document.getElementById('viewport-zoom-slider');
       if (slider) slider.value = Math.round(factor * 100);
     }
   });
 
-  // 3. Initialize Photo & Video Scrubber
-  const scrubber = new window.PhotoScrubber('photo-scrubber-view', {
-    onFrameChange: (index, total) => {
-      const frameEl = document.getElementById('telemetry-frame');
-      if (frameEl) frameEl.textContent = `${String(index + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
-    }
-  });
+  // 3. Initialize Photo Scrubber
+  const scrubber = new window.PhotoScrubber('photo-scrubber-view');
 
   // 4. Initialize Continuous Miniature 3D & Photo Marquee on Gate
   const gateMarquee = new window.GateMarquee('gate-marquee-stage');
